@@ -1,0 +1,32 @@
+options:
+  image:
+    type: string
+    default: plexinc/pms-docker
+    description: The docker image to install.
+  port:
+    type: int
+    description: Port
+    default: 32400
+  dlna-port:
+    type: int
+    description: DLNA Port
+    default: 32469
+  allowed-networks:
+    type: string
+    description: Allowed networks
+    default: 192.168.0.0/24
+  claim:
+    type: string
+    description: Plex claim.
+    default: "123"
+  timezone:
+    type: string
+    description: Timezone code. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+    default: ES
+  advertise-ip:
+    type: string
+    description: |
+      A comma-separated list of URLs (http or https)
+      which are published up to plex.tv for server discovery.
+    default: ""
+
