@@ -51,16 +51,9 @@ class PlexCharm(CharmBase):
     def make_pod_spec(self):
         config = self.framework.model.config
         
-        dlna_port = config["dlna-port"] if "dlna-port" in config else 32469
-        port = config["port"] if "port" in config else 32400
-        timezone = config["timezone"] if "timezone" in config else "ES"
-        advertise_ip = config["advertise-ip"] if "advertise-ip" in config else ""
-        claim = config["claim"] if "claim" in config else ""
-        allowed_networks = config["allowed-networks"] if "allowed-networks" in config else ""
-
         ports = [
-            {"name": "dlna", "containerPort": dlna_port, "protocol": "TCP"},
-            {"name": "http", "containerPort": port, "protocol": "TCP"},
+            {"name": "dlna", "containerPort": config["dlna-port"], "protocol": "TCP"},
+            {"name": "http", "containerPort": config["port"], "protocol": "TCP"},
         ]
 
         spec = {
@@ -70,10 +63,10 @@ class PlexCharm(CharmBase):
                     "image": config["image"],
                     "ports": ports,
                     "config": {
-                        "PLEX_CLAIM": claim,
-                        "ALLOWED_NETWORKS": allowed_networks,
-                        "ADVERTISE_IP": advertise_ip,
-                        "TZ": timezone,
+                        "PLEX_CLAIM": config["claim"],
+                        "ALLOWED_NETWORKS": config["allowed-networks"],
+                        "ADVERTISE_IP": config["advertise-ip"],
+                        "TZ": config["timezone"],
                     },
                 }
             ],
@@ -93,7 +86,6 @@ class PlexCharm(CharmBase):
         """Upgrade the charm."""
         unit = self.model.unit
         unit.status = MaintenanceStatus("Upgrading charm")
-        self.on_start(event)
 
 
 if __name__ == "__main__":
