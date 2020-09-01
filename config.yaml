@@ -1,16 +1,18 @@
 options:
-  image:
+  plex_image_path:
     type: string
     default: plexinc/pms-docker
     description: The docker image to install.
-  port:
-    type: int
-    description: Port
-    default: 32400
-  dlna-port:
-    type: int
-    description: DLNA Port
-    default: 32469
+  plex_image_username:
+    type: string
+    description: |
+      The username for accessing the registry specified in plex_image_path.
+    default: ""
+  plex_image_password:
+    type: string
+    description: |
+      The password associated with plex_image_username for accessing the registry specified in plex_image_path.
+    default: ""
   allowed-networks:
     type: string
     description: Allowed networks
@@ -29,4 +31,23 @@ options:
       A comma-separated list of URLs (http or https)
       which are published up to plex.tv for server discovery.
     default: ""
+  site_url:
+    type: string
+    description: Ingress URL to access Plex Web UI
+    default: ""
+  max_file_size:
+    type: int
+    description: |
+      The maximum file size, in megabytes.
 
+      If there is a reverse proxy in front of Plex, it may
+      need to be configured to handle the requested size.
+    default: 5
+  ingress_whitelist_source_range:
+    type: string
+    description: |
+      A comma-separated list of CIDRs to store in the ingress.kubernetes.io/whitelist-source-range annotation.
+
+      This can be used to lock down access to Plex based on source IP address.
+    default: ""
+  # tls_name:

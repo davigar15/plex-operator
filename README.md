@@ -1,42 +1,35 @@
-# charm-skelton
+# Plex operator Charm for Kubernetes
 
-This is the skeleton of an [operator framework](https://github.com/canonical/operator) k8s charm.
-
-## Usage
-
-To create a charm based on this skeleton:
+## Requirements
 
 ```bash
-# Download the skeleton from github
-wget https://github.com/charmed-osm/charm-skeleton-k8s/archive/master.zip
-
-# Unpack the archive
-unzip master.zip
-mv charm-skeleton-k8s-master mycharm
-cd mycharm
-
-# Initialize the git repo
-git init
-
-# Install the submodules
-git submodule add https://github.com/canonical/operator mod/operator
-git submodule update --init
-
-# Edit metadata.yaml: set the name and describe your charm
-vim metadata.yaml
-[...]
-
-# Commit your changes
-git add .
-git commit -a
+sudo snap install juju --classic
+sudo snap install charmcraft --beta
+# If you don't have a Kubernetes, install Microk8s
+sudo snap install microk8s --classic
+sudo microk8s.status --wait-ready
+sudo microk8s.enable storage dns
 ```
 
-To deploy charm to juju:
+## Bootstrap a Juju controller in K8s
+
+- If you are using microk8s:
 
 ```bash
-juju deploy .
-
-# Make sure the charm is in an Active state
-juju status
+juju bootstrap microk8s
 ```
 
+- If you are using another Kubernetes:
+
+```bash
+cat /path/to/kube/config | juju add-k8s my-k8s
+juju bootstrap my-k8s
+```
+
+## Deploy Plex
+
+```bash
+juju add-model plex
+charmcraft build
+juju deploy ./plex.charm
+```
